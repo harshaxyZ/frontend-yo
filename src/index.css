@@ -1,161 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
-:root {
-  --color-bg-light: #FAFAF8;
-  --color-bg-dark: #0A0A0F;
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  
+  --color-background: #FAFAFA;
+  --color-foreground: #09090B;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F4F4F5;
+  --color-border: #E4E4E7;
+  
+  /* Strictly monochrome/grayscale palette with minimal accent */
+  --color-accent: #18181B;
+  --color-accent-foreground: #FFFFFF;
+  --color-muted: #71717A;
+  --color-muted-light: #A1A1AA;
 }
 
-body {
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
-
-/* Custom styles */
-.grain-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 9999;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.03; /* very subtle warm grain */
-}
-
-.dark .grain-overlay {
-  opacity: 0.015; /* even subtler on dark */
-}
-
-/* Scroll snap for scenario carousels */
-.carousel-container {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.carousel-container::-webkit-scrollbar {
-  display: none;
-}
-
-.carousel-item {
-  scroll-snap-align: start;
-  flex-shrink: 0;
-}
-
-/* Pulse waves for wave animations */
-@keyframes waveform-pulse {
-  0%, 100% {
-    transform: scaleY(0.3);
+@layer base {
+  html, body {
+    @apply bg-[var(--color-background)] text-[var(--color-foreground)] font-sans antialiased;
+    scroll-behavior: smooth;
   }
-  50% {
-    transform: scaleY(1);
+  
+  /* Hide scrollbar for clean premium feel */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  * {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 
-.waveform-bar {
-  animation: waveform-pulse 1.2s ease-in-out infinite;
-  transform-origin: bottom;
-}
-
-/* Floating orb animation */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px) scale(1);
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.04)];
   }
-  50% {
-    transform: translateY(-15px) scale(1.05);
+  
+  .glass-panel-dark {
+    @apply bg-[#09090B]/80 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.12)];
   }
-}
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-float-delayed {
-  animation: float 8s ease-in-out infinite;
-  animation-delay: 2s;
-}
-
-/* Smooth transition for spring physical feel */
-.spring-transition {
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15);
-}
-
-/* Shimmer CTA effect */
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
+  .text-balance {
+    text-wrap: balance;
   }
-}
 
-.shimmer-sweep {
-  position: relative;
-  overflow: hidden;
-}
-
-.shimmer-sweep::after {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  transform: translateX(-100%);
-  background-image: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.15) 20%,
-    rgba(255, 255, 255, 0.3) 60%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  animation: shimmer 2.5s infinite;
-  content: '';
-}
-
-.dark .shimmer-sweep::after {
-  background-image: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.05) 20%,
-    rgba(255, 255, 255, 0.15) 60%,
-    rgba(255, 255, 255, 0) 100%
-  );
-}
-
-/* Dot Bouncing Indicator */
-@keyframes bounce-dot {
-  0%, 100% {
-    transform: translateY(0);
+  .premium-shadow {
+    box-shadow: 0 4px 24px -4px rgba(0,0,0,0.03), 0 16px 48px -12px rgba(0,0,0,0.06);
   }
-  50% {
-    transform: translateY(-8px);
+  
+  .text-glow {
+    text-shadow: 0 0 40px rgba(255,255,255,0.4);
   }
-}
-
-.dot-bounce-1 {
-  animation: bounce-dot 0.6s infinite alternate;
-}
-
-.dot-bounce-2 {
-  animation: bounce-dot 0.6s infinite alternate;
-  animation-delay: 0.15s;
-}
-
-.dot-bounce-3 {
-  animation: bounce-dot 0.6s infinite alternate;
-  animation-delay: 0.3s;
-}
-
-/* Hide scrollbars */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }

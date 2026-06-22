@@ -1,281 +1,174 @@
-import React, { useState } from 'react';
-import { useAppStore } from '../store';
-import { Search, Flame, Clock, Mic, MessageSquare, Compass, Briefcase, Utensils, AlertTriangle, ArrowRight, Play } from 'lucide-react';
-import { CoffeeIllustration, AutoIllustration, DosaIllustration } from '../components/Illustrations';
+import React, { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Play, Mic, MessageSquare, ArrowRight, Activity } from 'lucide-react';
+import GlassCard from '../components/ui/GlassCard';
+import { useNavigate } from 'react-router-dom';
 
-export const RenderScenarioIllustration: React.FC<{ id: string }> = ({ id }) => {
-  switch (id) {
-    case 'scen-coffee':
-      return <CoffeeIllustration />;
-    case 'scen-auto':
-      return <AutoIllustration />;
-    case 'scen-dosa':
-    default:
-      return <DosaIllustration />;
-  }
-};
+gsap.registerPlugin(ScrollTrigger);
 
-export const Home: React.FC = () => {
-  const { profile, scenarios, setScreen, setActiveScenario } = useAppStore();
-  const [activeCategory, setActiveCategory] = useState('cat-daily');
-  const [searchQuery, setSearchQuery] = useState('');
+const Home = () => {
+  const navigate = useNavigate();
+  const headerRef = useRef(null);
+  const cardsRef = useRef(null);
+  const streakRef = useRef(null);
 
-  const handleStartPractice = () => {
-    setScreen('Categories');
-  };
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Entrance animations for desktop grid
+      gsap.fromTo(
+        headerRef.current,
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: 'power4.out', delay: 0.1 }
+      );
 
-  const handleScenarioClick = (scen: typeof scenarios[0]) => {
-    setActiveScenario(scen);
-    setScreen('ScenarioDetail');
-  };
+      gsap.fromTo(
+        '.stagger-card',
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: cardsRef.current,
+            start: 'top 80%',
+          },
+        }
+      );
 
-  const trendingScenarios = scenarios.filter(s => ['scen-coffee', 'scen-auto', 'scen-dosa'].includes(s.id));
-  const lastActiveScenario = scenarios[0]; // Order filter coffee in Indiranagar
+      gsap.fromTo(
+        streakRef.current,
+        { scale: 0.95, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 1,
+          ease: 'elastic.out(1, 0.7)',
+          scrollTrigger: {
+            trigger: streakRef.current,
+            start: 'top 90%',
+          },
+        }
+      );
+    });
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div className="flex-1 flex flex-col bg-[#FAFAF8] text-[#0F1E36] overflow-y-auto no-scrollbar pb-24">
-      {/* Background Grain */}
-      <div className="grain-overlay" />
-
-      {/* Main Content Area with safe spacing */}
-      <div className="px-5 py-4 space-y-6">
-
-        {/* 1. Hero Greeting Section */}
-        <div className="relative pt-1 flex justify-between items-start gap-4">
-          {/* Left Side: Greeting and CTA */}
-          <div className="flex-1 z-10">
-            <span className="text-[11px] font-black uppercase tracking-widest text-gray-400">Good morning,</span>
-            
-            {/* Underlined Username */}
-            <div className="relative inline-block mt-0.5 mb-5">
-              <h2 className="text-4xl font-black tracking-tight text-[#0F1E36]">
-                {profile.displayName}
-              </h2>
-              <div className="absolute left-0 right-0 bottom-[-4px] h-[3px] bg-[#FF6B6B] rounded-full" />
-            </div>
-
-            {/* Tagline */}
-            <h3 className="text-[22px] font-black tracking-tight leading-tight max-w-[240px]">
-              Become a better <span className="text-[#FF6B6B]">communicator</span>, one conversation at a time.
-            </h3>
-            
-            {/* Subtitle */}
-            <p className="text-[11px] font-semibold text-gray-400 mt-2 max-w-[220px] leading-relaxed">
-              Practice real conversations with AI roleplays designed to build your confidence.
-            </p>
-
-            {/* CTA Button */}
-            <button
-              onClick={handleStartPractice}
-              className="mt-4 px-5 py-3.5 bg-[#FF6B6B] hover:bg-[#FF5C5C] text-white text-xs font-black rounded-full flex items-center justify-center shadow-[0_8px_20px_rgba(255,107,107,0.25)] transition-all active:scale-95 uppercase tracking-widest"
-            >
-              <span>Start practicing</span>
-              <ArrowRight size={13} className="ml-1.5" strokeWidth={3} />
-            </button>
-          </div>
-
-          {/* Right Side: Decorative Dotted Line & Floating Icons */}
-          <div className="relative w-28 h-40 flex-shrink-0 select-none">
-            {/* Dashed curved line */}
-            <svg className="absolute inset-0 w-full h-full text-[#FF6B6B]/25 pointer-events-none" fill="none">
-              <path d="M10,130 Q70,95 40,30 T100,10" stroke="currentColor" strokeWidth="2" strokeDasharray="5 5" />
-            </svg>
-
-            {/* Floating Message Icon */}
-            <div className="absolute left-1 bottom-4 p-2 bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] border border-[#EAEAE6] text-[#FF6B6B]">
-              <MessageSquare size={16} strokeWidth={2.5} />
-            </div>
-
-            {/* Floating Soundwave Icon */}
-            <div className="absolute left-8 top-12 p-2 bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] border border-[#EAEAE6] text-[#FF6B6B]">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 10h2v4H5v-4zm4-4h2v12H9V6zm4 8h2v6h-2v-6zm4-12h2v14h-2V2z" />
-              </svg>
-            </div>
-
-            {/* Floating Menu Icon */}
-            <div className="absolute right-1 top-2 p-2 bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] border border-[#EAEAE6] text-[#FF6B6B]">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </div>
-          </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4 }}
+      className="flex flex-col gap-12 lg:gap-20 w-full"
+    >
+      {/* Hero Section */}
+      <section ref={headerRef} className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pt-4">
+        <div className="flex flex-col gap-4 max-w-2xl">
+          <p className="text-sm font-[600] uppercase tracking-widest text-[#71717A]">Welcome back, Harsha</p>
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-[800] tracking-tighter leading-[1.1] text-balance">
+            Master communication.<br />
+            <span className="text-[#A1A1AA]">No pressure.</span>
+          </h1>
+          <p className="text-lg text-[#71717A] max-w-lg mt-4 leading-relaxed font-[400]">
+            Drop the scripts. Engage in ultra-realistic AI roleplays designed to build your conversational muscle in Kannada and English.
+          </p>
         </div>
-
-        {/* 2. Search Bar Section */}
-        <div className="relative w-full">
-          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
-            <Search size={18} strokeWidth={2.5} />
-          </div>
-          <input
-            type="text"
-            placeholder="Search scenarios (e.g. airport, doctor, market)..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-11 pr-4 py-3.5 bg-white border border-[#EAEAE6] rounded-2xl text-xs font-semibold shadow-[0_4px_20px_rgba(0,0,0,0.015)] focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]/20 transition-all duration-300 placeholder-gray-400"
-          />
-        </div>
-
-        {/* 3. Category Chips Section */}
-        <div className="w-full">
-          <div className="overflow-x-auto no-scrollbar flex space-x-2 py-1">
-            {[
-              { id: 'cat-daily', label: 'Daily Life', icon: MessageSquare },
-              { id: 'cat-travel', label: 'Travel', icon: Compass },
-              { id: 'cat-work', label: 'Work', icon: Briefcase },
-              { id: 'cat-food', label: 'Food', icon: Utensils },
-              { id: 'cat-emergency', label: 'Emergency', icon: AlertTriangle }
-            ].map((cat) => {
-              const Icon = cat.icon;
-              const isActive = activeCategory === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => {
-                    setActiveCategory(cat.id);
-                    setScreen('Categories');
-                  }}
-                  className={`flex items-center space-x-1.5 px-4 py-2.5 rounded-full text-xs font-extrabold transition-all duration-200 flex-shrink-0 active:scale-95 border ${
-                    isActive
-                      ? 'bg-[#FF6B6B] border-[#FF6B6B] text-white shadow-[0_4px_12px_rgba(255,107,107,0.2)]'
-                      : 'bg-white border-[#EAEAE6] text-gray-500 hover:border-gray-300'
-                  }`}
-                >
-                  <Icon size={12} strokeWidth={2.5} />
-                  <span>{cat.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* 4. Continue where you left off Card */}
-        <div 
-          onClick={() => handleScenarioClick(lastActiveScenario)}
-          className="p-4 bg-white border border-[#EAEAE6] rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.015)] cursor-pointer hover:shadow-md transition-all active:scale-[0.99] flex items-center justify-between gap-4"
-        >
-          <div className="flex items-center space-x-3.5">
-            <div className="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0 relative shadow-sm border border-[#EAEAE6]">
-              <RenderScenarioIllustration id={lastActiveScenario.id} />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-[9px] font-black uppercase tracking-wider text-[#FF6B6B]">Continue Practicing</span>
-              <h4 className="font-black text-xs text-[#0F1E36] mt-0.5 leading-snug line-clamp-1">{lastActiveScenario.title}</h4>
-              <p className="text-[10px] text-gray-400 font-bold mt-1 flex items-center">
-                <span>Daily Life</span>
-                <span className="mx-1.5">•</span>
-                <span>{lastActiveScenario.durationMin} mins left</span>
-              </p>
-            </div>
-          </div>
-          <button 
-            className="px-3.5 py-1.5 bg-[#FFF8F8] border border-[#FF6B6B]/20 text-[#FF6B6B] font-black text-[10px] rounded-full flex items-center justify-center transition-all hover:bg-[#FF6B6B] hover:text-white"
-          >
-            <span>Resume</span>
-            <ArrowRight size={10} className="ml-1" strokeWidth={3} />
+        
+        <div className="flex gap-4 lg:flex-col shrink-0">
+          <button onClick={() => navigate('/categories')} className="h-14 px-8 bg-[#09090B] text-white rounded-full flex items-center justify-center gap-2 hover:bg-[#18181B] active:scale-95 transition-all shadow-xl shadow-black/10">
+            <Play fill="currentColor" size={18} />
+            <span className="font-[600] uppercase tracking-widest text-sm">Start Session</span>
           </button>
         </div>
+      </section>
 
-        {/* 5. Trending Carousel Section */}
-        <div className="space-y-3">
-          <div className="flex justify-between items-center">
-            <h3 className="text-xs font-black uppercase tracking-widest text-[#0F1E36]">
-              Trending conversations
-            </h3>
-            <button
-              onClick={() => setScreen('Categories')}
-              className="text-[10px] font-black text-[#FF6B6B] flex items-center space-x-1"
-            >
-              <span>See all</span>
-              <ArrowRight size={10} strokeWidth={3} />
-            </button>
-          </div>
-
-          {/* Horizontal LARGE Scenario Cards Scroll */}
-          <div className="overflow-x-auto flex space-x-4.5 pb-4.5 no-scrollbar scroll-smooth snap-x snap-mandatory">
-            {trendingScenarios.map((scen) => (
-              <div
-                key={scen.id}
-                onClick={() => handleScenarioClick(scen)}
-                className="snap-start carousel-item w-72 h-44 rounded-[24px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-[#EAEAE6] flex-shrink-0 cursor-pointer relative hover:shadow-md transition-all active:scale-[0.98]"
-              >
-                {/* Full scenario card background vector illustration */}
-                <div className="absolute inset-0 w-full h-full pointer-events-none">
-                  <RenderScenarioIllustration id={scen.id} />
-                </div>
-
-                {/* Dark gradient overlay for text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none" />
-
-                {/* TOP Corner Badge: POPULAR / TRENDING */}
-                <div className="absolute top-3.5 right-3.5 z-10">
-                  <span className="bg-[#FF6B6B] text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-widest shadow-sm">
-                    {scen.isHot ? 'TRENDING' : 'POPULAR'}
-                  </span>
-                </div>
-
-                {/* Bottom Overlay Info */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 text-white z-10 flex flex-col justify-end">
-                  <h4 className="font-black text-sm tracking-tight leading-tight text-white mb-1.5 line-clamp-1">
-                    {scen.title}
-                  </h4>
-                  
-                  {/* Badges Row */}
-                  <div className="flex items-center space-x-2 text-[10px] font-extrabold text-gray-200">
-                    <span className="capitalize bg-white/20 px-1.5 py-0.5 rounded text-[8px] tracking-wide font-black">
-                      {scen.difficulty}
-                    </span>
-                    <span>•</span>
-                    <span className="flex items-center">
-                      <Clock size={10} className="mr-0.5" />
-                      {scen.durationMin}m
-                    </span>
-                    <span>•</span>
-                    <span className="flex items-center">
-                      <Mic size={10} className="mr-0.5" />
-                      Voice
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Dots Indicator */}
-          <div className="flex justify-center space-x-2">
-            <div className="w-4 h-1.5 rounded-full bg-[#FF6B6B]" />
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-200" />
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-200" />
-          </div>
-        </div>
-
-        {/* 6. Streak Card Section */}
-        <div 
-          onClick={() => setScreen('History')}
-          className="p-4.5 bg-white border border-[#EAEAE6] rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.015)] flex items-center justify-between gap-4 cursor-pointer hover:shadow-md transition-all active:scale-[0.99]"
-        >
-          <div className="flex items-center space-x-3.5">
-            {/* Gold Flame Icon */}
-            <div className="w-10 h-10 rounded-full bg-[#FFFBEB] text-[#F59E0B] flex items-center justify-center shadow-inner">
-              <Flame size={20} className="fill-current animate-pulse text-[#F59E0B]" />
+      {/* Streak / Stats Section */}
+      <section ref={streakRef} className="w-full">
+        <GlassCard className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 overflow-hidden relative">
+          <div className="absolute right-0 top-0 w-64 h-64 bg-[#E4E4E7] rounded-full blur-[100px] opacity-20 pointer-events-none -translate-y-1/2 translate-x-1/4"></div>
+          
+          <div className="flex items-center gap-6 z-10">
+            <div className="w-16 h-16 rounded-2xl bg-[#09090B] text-white flex items-center justify-center shrink-0">
+              <Activity size={28} />
             </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-black tracking-tight text-[#0F1E36]">12 Day streak</span>
-              <span className="text-[10px] text-gray-400 font-bold mt-0.5">
-                Keep it going! You're doing great.
-              </span>
+            <div>
+              <h3 className="text-3xl font-[800] tracking-tighter">12 Day Streak</h3>
+              <p className="text-[#71717A] font-[500] mt-1">You're in the top 5% of active learners this week.</p>
             </div>
           </div>
           
-          {/* Coral Progress Bar with Thumb */}
-          <div className="w-24 h-2 bg-gray-100 rounded-full overflow-hidden relative">
-            <div className="h-full bg-[#FF6B6B] rounded-full" style={{ width: '60%' }} />
-            <div className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-[#FF6B6B] border-2 border-white shadow-sm" style={{ left: '50%' }} />
+          <div className="w-full sm:w-64 h-2 bg-[#E4E4E7] rounded-full overflow-hidden shrink-0 z-10">
+            <div className="h-full bg-[#09090B] rounded-full w-[75%] relative">
+              <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-r from-transparent to-white/30"></div>
+            </div>
           </div>
+        </GlassCard>
+      </section>
+
+      {/* Scenarios Grid */}
+      <section ref={cardsRef} className="flex flex-col gap-8">
+        <div className="flex items-end justify-between">
+          <div>
+            <h2 className="text-3xl font-[800] tracking-tighter">Featured Scenarios</h2>
+            <p className="text-[#71717A] mt-2 font-[500]">Curated roleplays for everyday situations.</p>
+          </div>
+          <button onClick={() => navigate('/categories')} className="hidden sm:flex items-center gap-2 text-sm font-[600] uppercase tracking-widest text-[#09090B] hover:text-[#71717A] transition-colors">
+            View Library <ArrowRight size={16} />
+          </button>
         </div>
 
-      </div>
-    </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Card 1 */}
+          <GlassCard hoverable dark className="stagger-card group flex flex-col justify-end min-h-[360px] relative overflow-hidden" onClick={() => navigate('/chat/coffee')}>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
+            {/* Abstract Graphic */}
+            <div className="absolute inset-0 bg-[#121212] z-0 flex items-center justify-center">
+               <div className="w-[120%] h-[120%] border border-white/5 rounded-full absolute -top-1/4 -right-1/4 group-hover:scale-105 transition-transform duration-700"></div>
+               <div className="w-[80%] h-[80%] border border-white/10 rounded-full absolute -top-10 -right-10"></div>
+            </div>
+
+            <div className="relative z-20 flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-[600] uppercase tracking-widest text-white">Popular</span>
+                <span className="px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-xs font-[600] uppercase tracking-widest text-white flex items-center gap-1"><Mic size={12}/> Voice</span>
+              </div>
+              <h3 className="text-3xl font-[800] tracking-tighter leading-tight mt-2">Order Coffee<br/>in Bengaluru</h3>
+              <p className="text-[#A1A1AA] font-[400] text-sm">7 min &bull; Intermediate</p>
+            </div>
+          </GlassCard>
+
+          {/* Card 2 */}
+          <GlassCard hoverable className="stagger-card group flex flex-col justify-end min-h-[360px] relative overflow-hidden" onClick={() => navigate('/chat/auto')}>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent z-10"></div>
+            <div className="relative z-20 flex flex-col gap-3 mt-auto">
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 bg-black/5 backdrop-blur-md border border-black/5 rounded-full text-xs font-[600] uppercase tracking-widest text-[#09090B]">Trending</span>
+              </div>
+              <h3 className="text-3xl font-[800] tracking-tighter leading-tight mt-2">Auto Ride to<br/>Indiranagar</h3>
+              <p className="text-[#71717A] font-[400] text-sm">5 min &bull; Beginner</p>
+            </div>
+          </GlassCard>
+
+          {/* Card 3 */}
+          <GlassCard hoverable className="stagger-card group flex flex-col justify-end min-h-[360px] relative overflow-hidden" onClick={() => navigate('/chat/interview')}>
+             <div className="absolute inset-0 bg-[#E4E4E7]/30 z-0 group-hover:bg-[#E4E4E7]/50 transition-colors duration-500"></div>
+             <div className="relative z-20 flex flex-col gap-3 mt-auto">
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 bg-black/5 backdrop-blur-md border border-black/5 rounded-full text-xs font-[600] uppercase tracking-widest text-[#09090B]">Advanced</span>
+              </div>
+              <h3 className="text-3xl font-[800] tracking-tighter leading-tight mt-2">Job Interview<br/>Preparation</h3>
+              <p className="text-[#71717A] font-[400] text-sm">10 min &bull; Advanced</p>
+            </div>
+          </GlassCard>
+        </div>
+      </section>
+    </motion.div>
   );
 };
 
+export default Home;
