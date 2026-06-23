@@ -9,8 +9,8 @@ export default function DashboardHome() {
     <div className="w-full h-full animate-slide-up">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h2 className="text-2xl font-semibold text-zinc-100 tracking-tight">Welcome back, Harsha.</h2>
-          <p className="text-sm text-zinc-400 mt-1">Your language models are initialized and ready.</p>
+          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Welcome back, Harsha.</h2>
+          <p className="text-sm text-slate-500 mt-1">Your language models are initialized and ready.</p>
         </div>
       </div>
 

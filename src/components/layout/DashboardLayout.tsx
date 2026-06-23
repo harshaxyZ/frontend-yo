@@ -8,7 +8,7 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-50 flex font-sans">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex font-sans">
       <DesktopSidebar />
 
       {/* Main Content Area */}
