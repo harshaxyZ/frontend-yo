@@ -3,63 +3,29 @@ import { Flame, ChevronRight } from 'lucide-react'
 
 export default function StreakCard() {
   return (
-    <div 
-      style={{
-        background: 'var(--bg-card)',
-        borderRadius: 'var(--radius-md)',
-        boxShadow: 'var(--shadow-md)',
-        padding: '16px',
-        margin: '32px 20px 0',
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: '12px'
-      }}
-    >
-      <div 
-        style={{
-          width: '48px',
-          height: '48px',
-          borderRadius: '50%',
-          background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0
-        }}
-      >
-        <Flame size={24} strokeWidth={2.5} color="var(--gold)" />
-      </div>
-
-      <div style={{ flex: 1 }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-          <span style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text-primary)' }}>12</span>
-          <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)' }}>Day streak</span>
+    <div className="px-6 lg:px-12 w-full max-w-3xl mt-2 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+      <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-100 flex items-center justify-between cursor-pointer group transition-all duration-300 hover:shadow-md hover:border-slate-200">
+        <div className="flex items-center gap-5">
+          <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <Flame size={28} strokeWidth={2.5} className="text-indigo-600" />
+          </div>
+          
+          <div>
+            <div className="flex items-baseline gap-2 mb-1.5">
+              <span className="font-display font-bold text-3xl text-slate-900">12</span>
+              <span className="text-slate-500 font-medium text-sm uppercase tracking-wide">Day Streak</span>
+            </div>
+            
+            <div className="w-48 h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-full bg-indigo-600 rounded-full w-[75%] animate-progress" />
+            </div>
+          </div>
         </div>
         
-        <div 
-          style={{
-            width: '100%',
-            height: '6px',
-            background: 'var(--border)',
-            borderRadius: '3px',
-            marginTop: '8px',
-            overflow: 'hidden'
-          }}
-        >
-          <div 
-            style={{
-              width: '75%',
-              height: '100%',
-              background: 'linear-gradient(90deg, var(--coral) 0%, var(--gold) 100%)',
-              borderRadius: '3px',
-              animation: 'fillProgress 1.5s ease-out forwards'
-            }}
-          />
+        <div className="w-10 h-10 rounded-full border border-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-slate-50 group-hover:text-indigo-600 group-hover:border-indigo-100 transition-all duration-300">
+          <ChevronRight size={20} />
         </div>
       </div>
-
-      <ChevronRight size={20} color="var(--text-muted)" style={{ flexShrink: 0 }} />
     </div>
   )
 }

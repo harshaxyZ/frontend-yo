@@ -1,119 +1,69 @@
 @import "tailwindcss";
 
-:root {
-  --bg-primary: #FAFAF8;
-  --bg-card: #FFFFFF;
-  --text-primary: #0F0F0F;
-  --text-secondary: #6B6B6B;
-  --text-muted: #A3A3A3;
-  --coral: #FF6B6B;
-  --coral-light: #FFF0F0;
-  --coral-dark: #E85D5D;
-  --teal: #0D9488;
-  --gold: #F59E0B;
-  --gold-light: #FEF3C7;
-  --border: #F0F0F0;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-pill: 9999px;
-}
-
 @theme {
+  --font-display: 'Outfit', sans-serif;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --color-bg-primary: var(--bg-primary);
-  --color-bg-card: var(--bg-card);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-muted: var(--text-muted);
-  --color-coral: var(--coral);
-  --color-coral-light: var(--coral-light);
-  --color-coral-dark: var(--coral-dark);
-  --color-teal: var(--teal);
-  --color-gold: var(--gold);
-  --color-gold-light: var(--gold-light);
-  --color-border: var(--border);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  background-color: #F8FAFC; /* slate-50 */
+  color: #0F172A; /* slate-900 */
+  font-family: 'Inter', sans-serif;
   overflow-x: hidden;
 }
 
-@media (min-width: 1024px) {
-  .app-container {
-    max-width: 430px;
-    margin: 0 auto;
-    min-height: 100vh;
-    min-height: 100dvh;
-    background: var(--bg-primary);
-    box-shadow: 0 0 60px rgba(0,0,0,0.1);
-    position: relative;
-    overflow: hidden;
-  }
-  body {
-    background: #E8E8E8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+/* Custom Utilities */
+.font-display {
+  font-family: 'Outfit', sans-serif;
 }
 
-@media (max-width: 1023px) {
-  .app-container {
-    width: 100%;
-    min-height: 100dvh;
-    background: var(--bg-primary);
-    position: relative;
-    overflow-x: hidden;
-  }
-}
-
-/* Animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes fillProgress {
-  from { width: 0%; }
-  to { width: 100%; }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-/* Utility classes mapped strictly to the spec */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+@keyframes progress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+.animate-progress {
+  animation: progress 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

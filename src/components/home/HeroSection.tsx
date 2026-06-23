@@ -1,115 +1,29 @@
 import React from 'react'
-import { ArrowRight, MessageCircle, Activity, Menu } from 'lucide-react'
+import { Sparkles, ArrowRight } from 'lucide-react'
 
 export default function HeroSection() {
   return (
-    <section className="relative pt-[72px] pb-[32px] w-full box-border">
-      {/* Text Content */}
-      <p style={{ fontSize: '15px', fontWeight: 500, color: 'var(--text-secondary)', marginLeft: '20px' }}>
-        Good morning,
-      </p>
-      
-      <h1 style={{ fontSize: '40px', fontWeight: 800, color: 'var(--text-primary)', marginLeft: '20px', lineHeight: 1.1 }}>
-        Harsha
-      </h1>
-      
-      <div 
-        style={{ width: '60px', height: '4px', background: 'var(--coral)', borderRadius: '2px', marginLeft: '20px', marginTop: '8px' }} 
-      />
-      
-      <h2 style={{ fontSize: '24px', fontWeight: 700, lineHeight: 1.3, margin: '16px 20px 0', color: 'var(--text-primary)' }}>
-        <span>Become a better </span>
-        <span style={{ color: 'var(--coral)' }}>communicator</span>
-        <span>, one conversation at a time.</span>
-      </h2>
-      
-      <p style={{ fontSize: '15px', fontWeight: 400, color: 'var(--text-secondary)', margin: '12px 20px 0', maxWidth: '280px' }}>
-        Practice real conversations with AI roleplays designed to build your confidence.
-      </p>
-      
-      <button 
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '8px',
-          background: 'var(--coral)',
-          color: '#FFFFFF',
-          fontSize: '15px',
-          fontWeight: 700,
-          padding: '14px 28px',
-          borderRadius: 'var(--radius-pill)',
-          margin: '24px 20px 0',
-          boxShadow: '0 4px 20px rgba(255,107,107,0.3)',
-          border: 'none',
-          outline: 'none',
-          cursor: 'pointer',
-          transition: 'transform 0.15s ease-out'
-        }}
-        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-        onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-        onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.98)'}
-        onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-      >
-        Start practicing
-        <ArrowRight size={18} strokeWidth={2.5} />
-      </button>
-
-      {/* Decorative Elements */}
-      <div 
-        className="absolute right-[20px] top-[90px] flex flex-col items-center gap-[4px] pointer-events-none"
-      >
-        <div 
-          style={{
-            width: '44px',
-            height: '44px',
-            background: '#FFFFFF',
-            borderRadius: '14px',
-            boxShadow: 'var(--shadow-md)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            animation: 'float 3s ease-in-out infinite'
-          }}
-        >
-          <MessageCircle size={20} strokeWidth={2} color="var(--coral)" />
-        </div>
-        
-        <div style={{ height: '24px', width: '2px', borderLeft: '2px dashed var(--coral)', animation: 'float 3s ease-in-out infinite 0.2s' }} />
-        
-        <div 
-          style={{
-            width: '44px',
-            height: '44px',
-            background: '#FFFFFF',
-            borderRadius: '14px',
-            boxShadow: 'var(--shadow-md)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            animation: 'float 3s ease-in-out infinite 0.5s'
-          }}
-        >
-          <Activity size={20} strokeWidth={2} color="var(--coral)" />
-        </div>
-        
-        <div style={{ height: '24px', width: '2px', borderLeft: '2px dashed var(--coral)', animation: 'float 3s ease-in-out infinite 0.7s' }} />
-        
-        <div 
-          style={{
-            width: '44px',
-            height: '44px',
-            background: '#FFFFFF',
-            borderRadius: '14px',
-            boxShadow: 'var(--shadow-md)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            animation: 'float 3s ease-in-out infinite 1s'
-          }}
-        >
-          <Menu size={20} strokeWidth={2} color="var(--coral)" />
-        </div>
+    <section className="pt-16 pb-12 px-6 lg:pt-24 lg:px-12 w-full max-w-4xl animate-fade-in-up">
+      <div className="flex items-center gap-2 mb-6 text-indigo-600 bg-indigo-50 w-fit px-3 py-1.5 rounded-full border border-indigo-100/50">
+        <Sparkles size={16} strokeWidth={2.5} />
+        <span className="text-xs font-bold tracking-wide uppercase">Daily Practice</span>
       </div>
+
+      <h1 className="font-display font-bold text-[2.75rem] leading-[1.1] tracking-tight text-slate-900 mb-6 lg:text-6xl lg:leading-[1.05]">
+        Master the art of <br className="hidden md:block" />
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-500">
+          conversation.
+        </span>
+      </h1>
+
+      <p className="text-slate-500 text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-normal">
+        Practice real-world scenarios with AI-powered roleplays designed to build your confidence and fluency, one interaction at a time.
+      </p>
+
+      <button className="group relative inline-flex items-center gap-3 bg-slate-900 text-white font-medium text-base px-8 py-4 rounded-full overflow-hidden transition-all duration-300 hover:bg-indigo-600 hover:shadow-[0_8px_32px_-8px_rgba(79,70,229,0.5)] hover:-translate-y-0.5 cursor-pointer border-none outline-none">
+        <span className="relative z-10 font-semibold tracking-wide">Start your session</span>
+        <ArrowRight size={18} strokeWidth={2.5} className="relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
+      </button>
     </section>
   )
 }
