@@ -1,31 +1,34 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Routes, Route } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
-import SplashScreen from './screens/SplashScreen'
-import HomeScreen from './screens/HomeScreen'
-import PersonalizeScreen from './screens/PersonalizeScreen'
-import DesktopLayout from './screens/DesktopLayout'
+import AppShell from './components/layout/AppShell'
+
+// Screens
+import Splash from './screens/Splash'
+import Home from './screens/Home'
+import Categories from './screens/Categories'
+import Scenarios from './screens/Scenarios'
+import ScenarioDetail from './screens/ScenarioDetail'
+import Chat from './screens/Chat'
+import Call from './screens/Call'
+import Analysis from './screens/Analysis'
+import History from './screens/History'
+import Menu from './screens/Menu'
 
 export default function App() {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
-
-  useEffect(() => {
-    const handler = () => setIsMobile(window.innerWidth < 768)
-    window.addEventListener('resize', handler)
-    return () => window.removeEventListener('resize', handler)
-  }, [])
-
-  if (!isMobile) return <DesktopLayout />
-
   return (
-    <div style={{ maxWidth: 430, margin: '0 auto', minHeight: '100dvh', background: 'var(--bg-page)', position: 'relative', overflow: 'hidden' }}>
-      <AnimatePresence mode="wait">
-        <Routes>
-          <Route path="/" element={<SplashScreen />} />
-          <Route path="/home" element={<HomeScreen />} />
-          <Route path="/personalize" element={<PersonalizeScreen />} />
-        </Routes>
-      </AnimatePresence>
-    </div>
+    <AppShell>
+      <Routes>
+        <Route path="/" element={<Splash />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/scenarios" element={<Scenarios />} />
+        <Route path="/scenario/:id" element={<ScenarioDetail />} />
+        <Route path="/chat/:id" element={<Chat />} />
+        <Route path="/call/:id" element={<Call />} />
+        <Route path="/analysis/:id" element={<Analysis />} />
+        <Route path="/history" element={<History />} />
+        <Route path="/menu" element={<Menu />} />
+      </Routes>
+    </AppShell>
   )
 }
