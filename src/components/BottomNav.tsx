@@ -1,79 +1,70 @@
-import React from 'react';
-import { useAppStore } from '../store';
-import { Compass, Target, Clock, User } from 'lucide-react';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { Compass, Target, Clock, User } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
-export const BottomNav: React.FC = () => {
-  const { currentScreen, setScreen } = useAppStore();
+interface BottomNavProps {
+  active: 'discover' | 'practice' | 'history' | 'profile'
+}
 
-  const navItems = [
-    { id: 'Home', label: 'Discover', icon: Compass },
-    { id: 'Categories', label: 'Practice', icon: Target },
-    { id: 'History', label: 'History', icon: Clock },
-    { id: 'Menu', label: 'Profile', icon: User },
-  ];
+export default function BottomNav({ active }: BottomNavProps) {
+  const navigate = useNavigate()
 
-  // Map sub-screens to main nav items for active state highlighting
-  const getActiveTab = () => {
-    if (['Home'].includes(currentScreen)) {
-      return 'Home';
-    }
-    if (['Categories', 'ScenariosGrid', 'ScenarioDetail', 'Chat', 'AudioCall'].includes(currentScreen)) {
-      return 'Categories';
-    }
-    if (['Analysis', 'History'].includes(currentScreen)) {
-      return 'History';
-    }
-    if (currentScreen === 'Menu') {
-      return 'Menu';
-    }
-    return 'Home';
-  };
-
-  const activeTab = getActiveTab();
-
-  // Hide bottom nav on Splash, Chat, and AudioCall screens
-  if (['Splash', 'Chat', 'AudioCall'].includes(currentScreen)) {
-    return null;
-  }
-
+  const items = [
+    { id: 'discover', icon: Compass, label: 'Discover', path: '/home' },
+    { id: 'practice', icon: Target, label: 'Practice', path: '/personalize' }, // Routing practice to personalize for demo
+    { id: 'history', icon: Clock, label: 'History', path: '/home' },
+    { id: 'profile', icon: User, label: 'Profile', path: '/home' },
+  ]
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 z-40 bg-white shadow-[0_-8px_30px_rgba(0,0,0,0.06)] rounded-t-[24px] border-t border-[#F0F0ED] pb-safe transition-colors duration-300">
-      <div className="flex justify-around items-center h-16 px-2">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = activeTab === item.id;
-
-          return (
-            <button
-              key={item.id}
-              onClick={() => setScreen(item.id)}
-              className="flex flex-col items-center justify-center w-20 h-full relative"
+    <div 
+      className="fixed bottom-0 w-full max-w-[430px] left-1/2 -translate-x-1/2 z-50 flex justify-around items-center"
+      style={{ 
+        background: 'rgba(255,255,255,0.92)', 
+        backdropFilter: 'blur(16px)', 
+        borderTop: '1px solid var(--border)',
+        padding: '10px 0 22px'
+      }}
+    >
+      {items.map((item) => {
+        const isActive = active === item.id
+        const Icon = item.icon
+        
+        return (
+          <div 
+            key={item.id}
+            onClick={() => navigate(item.path)}
+            className="flex flex-col items-center gap-[4px] cursor-pointer p-[4px_16px] rounded-[12px]"
+          >
+            <motion.div
+              whileTap={{ scale: 1.25 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
             >
-              <div className={`transition-all duration-300 flex flex-col items-center justify-center ${
-                isActive 
-                  ? 'text-[#FF6B6B] scale-105' 
-                  : 'text-gray-400'
-              }`}>
-                <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
-                <span className={`text-[10px] font-bold tracking-wide mt-1 ${
-                  isActive 
-                    ? 'text-[#FF6B6B]' 
-                    : 'text-[#9CA3AF]'
-                }`}>
-                  {item.label}
-                </span>
-                {isActive && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#FF6B6B] mt-0.5" />
-                )}
-              </div>
-            </button>
-          );
-        })}
-      </div>
+              <Icon 
+                size={24} 
+                color={isActive ? 'var(--cobalt)' : 'var(--ink-faint)'} 
+                strokeWidth={isActive ? 2 : 1.5}
+              />
+            </motion.div>
+            <span 
+              className="text-[12px]"
+              style={{ 
+                color: isActive ? 'var(--cobalt)' : 'var(--ink-faint)',
+                fontWeight: isActive ? 700 : 400
+              }}
+            >
+              {item.label}
+            </span>
+            {isActive && (
+              <motion.div 
+                layoutId="navDot"
+                className="w-[4px] h-[4px] rounded-full bg-[var(--cobalt)] mt-[2px]"
+              />
+            )}
+          </div>
+        )
+      })}
     </div>
-  );
-};
-
-export default BottomNav;
-
+  )
+}

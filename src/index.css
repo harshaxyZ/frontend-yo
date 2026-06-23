@@ -1,55 +1,63 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Inter', sans-serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
   
-  /* Space Black & Titanium Theme */
-  --color-background: #0A0A0C; /* Deepest space black */
-  --color-foreground: #FFFFFF;
-  --color-surface: #121214;   /* Slightly lighter slate for cards */
-  --color-surface-hover: #1A1A1D;
-  --color-border: rgba(255, 255, 255, 0.08); /* Barely visible border */
+  --color-bg-page:        #F8F9FF;
+  --color-bg-card:        #FFFFFF;
+  --color-bg-subtle:      #EEF2FF;
   
-  --color-accent: #FFFFFF;
-  --color-accent-foreground: #0A0A0C;
-  --color-muted: #A1A1AA;
-  --color-muted-light: #71717A;
+  --color-cobalt:         #2563EB;
+  --color-cobalt-dark:    #1D4ED8;
+  --color-cobalt-light:   #DBEAFE;
+  --color-cobalt-text:    #1E40AF;
+  
+  --color-ink:            #0A0A0A;
+  --color-ink-secondary:  #374151;
+  --color-ink-muted:      #6B7280;
+  --color-ink-faint:      #9CA3AF;
+  
+  --color-border-default: #E0E4F0;
+  --color-border-strong:  #2563EB;
 }
 
-@layer base {
-  html, body {
-    @apply bg-[var(--color-background)] text-[var(--color-foreground)] font-sans antialiased;
-    scroll-behavior: smooth;
-  }
+:root {
+  --bg-page:        #F8F9FF;
+  --bg-card:        #FFFFFF;
+  --bg-subtle:      #EEF2FF;
   
-  /* Hide scrollbar for premium feel */
-  ::-webkit-scrollbar {
-    display: none;
-  }
-  * {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+  --cobalt:         #2563EB;
+  --cobalt-dark:    #1D4ED8;
+  --cobalt-light:   #DBEAFE;
+  --cobalt-text:    #1E40AF;
+  
+  --ink:            #0A0A0A;
+  --ink-secondary:  #374151;
+  --ink-muted:      #6B7280;
+  --ink-faint:      #9CA3AF;
+  
+  --border:         #E0E4F0;
+  --border-strong:  #2563EB;
+  
+  --shadow-card:    0 2px 12px rgba(37, 99, 235, 0.08);
+  --shadow-float:   0 8px 32px rgba(37, 99, 235, 0.15);
+  --shadow-btn:     0 4px 16px rgba(37, 99, 235, 0.35);
 }
 
-@layer utilities {
-  /* High-performance fake glass / metal panels. No heavy blurs! */
-  .metal-panel {
-    @apply bg-[#121214] border border-white/5 relative overflow-hidden;
-    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 4px 24px -4px rgba(0,0,0,0.5);
-  }
-
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  /* Titanium text gradient */
-  .text-titanium {
-    @apply bg-clip-text text-transparent bg-gradient-to-br from-white via-zinc-300 to-zinc-600;
-  }
-
-  /* Metallic button gradient */
-  .btn-metal {
-    @apply bg-gradient-to-b from-zinc-100 to-zinc-300 text-black shadow-[inset_0_-2px_0_rgba(0,0,0,0.1),_0_0_20px_rgba(255,255,255,0.1)];
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
 }
+
+html, body, #root {
+  height: 100%;
+  background: var(--bg-page);
+}
+
+.scenario-scroll::-webkit-scrollbar { display: none; }
+.scenario-scroll { -ms-overflow-style: none; scrollbar-width: none; }
