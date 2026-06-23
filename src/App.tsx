@@ -1,20 +1,18 @@
 import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import AppLayout from './components/layout/AppLayout'
-
-// Screens
-import DashboardHome from './screens/DashboardHome'
+import Loader from './components/ui/Loader'
+import Home from './screens/Home'
+import Dashboard from './screens/Dashboard'
 
 export default function App() {
   return (
-    <AppLayout>
+    <>
+      <Loader />
       <Routes>
-        <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<DashboardHome />} />
-        <Route path="/practice" element={<div className="text-zinc-400 font-mono text-xs">practice_module.init()</div>} />
-        <Route path="/history" element={<div className="text-zinc-400 font-mono text-xs">history_module.init()</div>} />
-        <Route path="/settings" element={<div className="text-zinc-400 font-mono text-xs">settings_module.init()</div>} />
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </AppLayout>
+    </>
   )
 }
