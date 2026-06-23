@@ -1,61 +1,80 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { LayoutGrid, Library, History, Settings } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const TopNav = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
   const location = useLocation();
 
-  React.useEffect(() => {
-    setIsOpen(false);
-  }, [location.pathname]);
+  const navItems = [
+    { path: '/', icon: <LayoutGrid strokeWidth={1.5} size={20} />, label: 'Home' },
+    { path: '/categories', icon: <Library strokeWidth={1.5} size={20} />, label: 'Library' },
+    { path: '/history', icon: <History strokeWidth={1.5} size={20} />, label: 'History' },
+  ];
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/10 h-20 px-4 sm:px-6 lg:px-12 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link to="/" className="text-2xl font-[800] tracking-tighter uppercase text-[#09090B]">
-            SAMVAD<span className="text-[#A1A1AA]">.</span>
-          </Link>
+      {/* Desktop Header */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0A0A0C]/80 backdrop-blur-md border-b border-white/5 h-16 px-6 lg:px-12 hidden md:flex items-center justify-between">
+        <Link to="/" className="text-xl font-[800] tracking-tighter uppercase text-white">
+          SAMVAD<span className="text-zinc-500">.</span>
+        </Link>
+
+        <div className="flex items-center gap-2">
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <Link 
+                key={item.path} 
+                to={item.path}
+                className={`px-4 py-2 rounded-full text-sm font-[600] tracking-widest uppercase transition-all ${
+                  isActive ? 'bg-white/10 text-white' : 'text-zinc-500 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </div>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8">
-          <Link to="/" className={`text-sm font-[600] uppercase tracking-widest ${location.pathname === '/' ? 'text-[#09090B]' : 'text-[#A1A1AA] hover:text-[#09090B] transition-colors'}`}>Dashboard</Link>
-          <Link to="/categories" className={`text-sm font-[600] uppercase tracking-widest ${location.pathname === '/categories' ? 'text-[#09090B]' : 'text-[#A1A1AA] hover:text-[#09090B] transition-colors'}`}>Library</Link>
-          <div className="h-4 w-px bg-[#E4E4E7]"></div>
-          <button className="h-10 px-6 bg-[#09090B] text-white text-sm font-[600] uppercase tracking-widest rounded-full hover:bg-[#18181B] active:scale-95 transition-all shadow-xl shadow-black/10">
-            Premium
-          </button>
-        </div>
-
-        {/* Mobile Toggle */}
-        <button className="md:hidden p-2 -mr-2 text-[#09090B] active:scale-95 transition-transform" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X strokeWidth={2.5} size={24} /> : <Menu strokeWidth={2.5} size={24} />}
+        <button className="h-9 px-5 btn-metal rounded-full text-xs font-[800] uppercase tracking-widest">
+          Premium
         </button>
       </nav>
 
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 bg-[#FAFAFA] pt-24 px-6 md:hidden flex flex-col gap-6"
-          >
-            <Link to="/" className="text-3xl font-[800] tracking-tighter text-[#09090B]">Dashboard</Link>
-            <Link to="/categories" className="text-3xl font-[800] tracking-tighter text-[#09090B]">Practice Library</Link>
-            <Link to="/history" className="text-3xl font-[800] tracking-tighter text-[#09090B]">History</Link>
-            <div className="mt-auto mb-12">
-              <button className="w-full h-14 bg-[#09090B] text-white text-sm font-[600] uppercase tracking-widest rounded-full shadow-2xl shadow-black/20">
-                Upgrade to Premium
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Mobile Floating Dock */}
+      <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-sm">
+        <div className="bg-[#121214]/90 backdrop-blur-xl border border-white/10 rounded-[32px] p-2 flex items-center justify-between shadow-[0_20px_40px_rgba(0,0,0,0.8)]">
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <Link 
+                key={item.path} 
+                to={item.path}
+                className={`relative flex flex-col items-center justify-center w-16 h-14 rounded-[24px] transition-all ${
+                  isActive ? 'text-white' : 'text-zinc-500'
+                }`}
+              >
+                {isActive && (
+                  <motion.div 
+                    layoutId="mobile-nav-pill"
+                    className="absolute inset-0 bg-white/10 rounded-[20px]"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{item.icon}</span>
+                {isActive && <span className="absolute bottom-1 w-1 h-1 bg-white rounded-full"></span>}
+              </Link>
+            );
+          })}
+          
+          <div className="w-px h-8 bg-white/10 mx-1"></div>
+          
+          <button className="w-14 h-14 rounded-[20px] flex items-center justify-center text-zinc-400 hover:text-white transition-colors">
+            <Settings strokeWidth={1.5} size={20} />
+          </button>
+        </div>
+      </div>
     </>
   );
 };

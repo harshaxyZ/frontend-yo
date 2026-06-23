@@ -3,17 +3,17 @@
 @theme {
   --font-sans: 'Inter', sans-serif;
   
-  --color-background: #FAFAFA;
-  --color-foreground: #09090B;
-  --color-surface: #FFFFFF;
-  --color-surface-hover: #F4F4F5;
-  --color-border: #E4E4E7;
+  /* Space Black & Titanium Theme */
+  --color-background: #0A0A0C; /* Deepest space black */
+  --color-foreground: #FFFFFF;
+  --color-surface: #121214;   /* Slightly lighter slate for cards */
+  --color-surface-hover: #1A1A1D;
+  --color-border: rgba(255, 255, 255, 0.08); /* Barely visible border */
   
-  /* Strictly monochrome/grayscale palette with minimal accent */
-  --color-accent: #18181B;
-  --color-accent-foreground: #FFFFFF;
-  --color-muted: #71717A;
-  --color-muted-light: #A1A1AA;
+  --color-accent: #FFFFFF;
+  --color-accent-foreground: #0A0A0C;
+  --color-muted: #A1A1AA;
+  --color-muted-light: #71717A;
 }
 
 @layer base {
@@ -22,7 +22,7 @@
     scroll-behavior: smooth;
   }
   
-  /* Hide scrollbar for clean premium feel */
+  /* Hide scrollbar for premium feel */
   ::-webkit-scrollbar {
     display: none;
   }
@@ -33,23 +33,23 @@
 }
 
 @layer utilities {
-  .glass-panel {
-    @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.04)];
-  }
-  
-  .glass-panel-dark {
-    @apply bg-[#09090B]/80 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.12)];
+  /* High-performance fake glass / metal panels. No heavy blurs! */
+  .metal-panel {
+    @apply bg-[#121214] border border-white/5 relative overflow-hidden;
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 4px 24px -4px rgba(0,0,0,0.5);
   }
 
   .text-balance {
     text-wrap: balance;
   }
 
-  .premium-shadow {
-    box-shadow: 0 4px 24px -4px rgba(0,0,0,0.03), 0 16px 48px -12px rgba(0,0,0,0.06);
+  /* Titanium text gradient */
+  .text-titanium {
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-white via-zinc-300 to-zinc-600;
   }
-  
-  .text-glow {
-    text-shadow: 0 0 40px rgba(255,255,255,0.4);
+
+  /* Metallic button gradient */
+  .btn-metal {
+    @apply bg-gradient-to-b from-zinc-100 to-zinc-300 text-black shadow-[inset_0_-2px_0_rgba(0,0,0,0.1),_0_0_20px_rgba(255,255,255,0.1)];
   }
 }
